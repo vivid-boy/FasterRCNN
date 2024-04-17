@@ -274,7 +274,7 @@ def predict_all(model, split):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("FasterRCNN")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--train", action="store_true", default=True, help="Train model")
+
     group.add_argument("--eval", action="store_true", help="Evaluate model")
     group.add_argument("--predict", metavar="url", action="store", type=str,
                        help="Run inference on image and display detected boxes")
@@ -282,25 +282,14 @@ if __name__ == "__main__":
                        help="Run inference on image and render detected boxes to 'predictions.png'")
     group.add_argument("--predict-all", metavar="name", action="store", type=str, default="test",
                        help="Run inference on all images in the specified dataset split and write to directory 'predictions_${split}'")
-    if 0:
-        parser.add_argument("--load-from", metavar="file", action="store", default="vgg16_caffe.pth",
-                            help="Load initial model weights from file")
-        parser.add_argument("--save-best-to", metavar="file", action="store", default="results_1.pth",
-                            help="Save best weights (highest mean average precision) to file")
-        parser.add_argument("--epochs", metavar="count", type=int, action="store", default=10,
-                            help="Number of epochs to train for")
-        parser.add_argument("--learning-rate", metavar="value", type=float, action="store", default=1e-3,
-                            help="Learning rate")
-    else:
-        parser.add_argument("--load-from", metavar="file", action="store", default="results_1.pth",
-                            help="Load initial model weights from file")
-        parser.add_argument("--save-best-to", metavar="file", action="store", default="results_final.pth",
-                            help="Save best weights (highest mean average precision) to file")
-        parser.add_argument("--epochs", metavar="count", type=int, action="store", default=4,
-                            help="Number of epochs to train for")
-        parser.add_argument("--learning-rate", metavar="value", type=float, action="store", default=1e-4,
-                            help="Learning rate")
 
+    parser.add_argument("--load-from", metavar="file", action="store", default="file_final.pth",
+                        help="Load initial model weights from file")
+
+    parser.add_argument("--epochs", metavar="count", type=int, action="store", default=4,
+                        help="Number of epochs to train for")
+    parser.add_argument("--learning-rate", metavar="value", type=float, action="store", default=1e-4,
+                            help="Learning rate")
 
     parser.add_argument("--backbone", metavar="model", action="store", default="vgg16",
                         help="Backbone model for feature extraction and classification")
@@ -366,10 +355,8 @@ if __name__ == "__main__":
         state.load(model=model, filepath=options.load_from)
 
     # Perform mutually exclusive procedures
-    if options.train:
-        train(model=model)
 
-    elif options.eval:
+    if options.eval:
         evaluate(model=model, plot=options.plot, print_average_precisions=True)
     elif options.predict:
         predict_one(model=model, url=options.predict, show_image=True, output_path=None)

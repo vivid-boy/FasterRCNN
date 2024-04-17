@@ -61,18 +61,18 @@ class Dataset:
     #     19: "train",
     #     20: "tvmonitor"
     # }
-    # num_classes = 2
-    # class_index_to_name = {
-    #     0: "background",
-    #     1: "fire"
-    # }
-
-    num_classes = 3
+    num_classes = 2
     class_index_to_name = {
         0: "background",
-        1: "hat",
-        2: "person"
+        1: "fire"
     }
+
+    # num_classes = 3
+    # class_index_to_name = {
+    #     0: "background",
+    #     1: "hat",
+    #     2: "person"
+    # }
 
     def __init__(self, split, image_preprocessing_params, compute_feature_map_shape_fn, feature_pixels=16,
                  dir="VOCdevkit/VOC2007", augment=True, shuffle=True, allow_difficult=False, cache=True):
